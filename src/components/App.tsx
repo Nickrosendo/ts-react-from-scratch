@@ -1,0 +1,15 @@
+import * as React from 'react';
+
+import '@/styles/index.css';
+
+class App extends React.PureComponent {
+  render() {
+    return (
+      <div>
+        <h1>Hello Typescript React World</h1>
+      </div>
+    );
+  }
+}
+
+export default App;

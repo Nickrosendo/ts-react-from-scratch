@@ -1,12 +1,26 @@
+const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
-  mode: 'production',
+  mode: "production",
+
+  entry: "./src/index",
+
+  output: {
+    path: path.join(__dirname, "/dist"),
+    filename: "bundle.js"
+  },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: "source-map",
 
   resolve: {
+    alias: {
+      // add import alias to src folder
+      "@": path.join(__dirname, "/src/")
+    },
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: [".ts", ".tsx", ".js"]
   },
 
   module: {
@@ -16,25 +30,35 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: "ts-loader"
           }
         ]
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.js$/,
-        loader: 'source-map-loader'
+        loader: "source-map-loader"
+      },
+      // css-loader to bundle all the css files into one file and style-loader to add all the styles  inside the style tag of the document
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html"
+    })
+  ]
 
   // When importing a module whose path matches one of the following, just
   // assume a corresponding global variable exists and use that instead.
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM'
-  }
+  // externals: {
+  //   react: 'React',
+  //   'react-dom': 'ReactDOM'
+  // }
 };
